@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Porch — The product</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #1F3A2E;
+    --forest-deep: #142820;
+    --forest-soft: #2D4E3E;
+    --cream: #F5EFE2;
+    --cream-light: #FAF6EC;
+    --brass: #A07D3B;
+    --brass-light: #C49A5A;
+    --brass-deep: #7A5D28;
+    --line: rgba(31, 58, 46, 0.14);
+    --line-soft: rgba(31, 58, 46, 0.08);
+    --muted: rgba(31, 58, 46, 0.65);
+    --amber-bg: #FDF4E3;
+    --red-bg: #FBEAE6;
+    --red-deep: #8B3A28;
+    --green-bg: #E8F0E4;
+    --green-deep: #2D5A3B;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--cream);
+    color: var(--forest);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    padding: 22px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(245, 239, 226, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 100;
+    border-bottom: 0.5px solid transparent;
+    transition: border-color 0.3s;
+  }
+  nav.scrolled { border-bottom-color: var(--line); }
+  .brand {
+    display: flex; align-items: center; gap: 12px;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--forest);
+    text-decoration: none;
+  }
+  .brand-icon { width: 30px; height: 30px; flex-shrink: 0; }
+  .nav-links { display: flex; gap: 36px; align-items: center; font-size: 14px; }
+  .nav-links a { color: var(--forest-soft); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--brass-deep); }
+  .nav-links a.active { color: var(--forest); font-weight: 500; }
+  .nav-cta {
+    padding: 9px 18px;
+    background: var(--forest);
+    color: var(--cream) !important;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--brass-deep); }
+
+  .page-hero {
+    padding: 160px 48px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .page-hero .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--brass-deep);
+    font-weight: 500;
+    margin-bottom: 28px;
+  }
+  .page-hero h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(40px, 5.4vw, 72px);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    font-weight: 400;
+    max-width: 18ch;
+    margin: 0 auto 28px;
+  }
+  .page-hero h1 em { font-style: italic; color: var(--brass-deep); }
+  .page-hero p {
+    font-size: 19px;
+    color: var(--forest-soft);
+    max-width: 58ch;
+    margin: 0 auto;
+    line-height: 1.55;
+  }
+
+  .section {
+    padding: 80px 48px 120px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .section-header { margin-bottom: 48px; }
+  .section-label {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 16px;
+    font-style: italic;
+    color: var(--brass-deep);
+    margin-bottom: 10px;
+  }
+  .section-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(30px, 3.4vw, 42px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+    max-width: 22ch;
+    margin-bottom: 16px;
+  }
+  .section-title em { font-style: italic; color: var(--brass-deep); }
+  .section-lead {
+    font-size: 17px;
+    color: var(--forest-soft);
+    max-width: 58ch;
+    line-height: 1.6;
+  }
+
+  /* ---- Browser frame ---- */
+  .frame {
+    background: white;
+    border: 0.5px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(31,58,46,0.04), 0 12px 40px rgba(31,58,46,0.08);
+  }
+  .frame-top {
+    background: #F0EBDF;
+    padding: 11px 16px;
+    display: flex; align-items: center; gap: 10px;
+    border-bottom: 0.5px solid var(--line);
+  }
+  .frame-dot {
+    width: 11px; height: 11px; border-radius: 50%;
+    background: rgba(31,58,46,0.18);
+  }
+  .frame-url {
+    margin-left: 14px;
+    background: white;
+    padding: 5px 14px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--forest-soft);
+    font-family: 'SF Mono', Menlo, monospace;
+    border: 0.5px solid var(--line);
+    display: flex; align-items: center; gap: 6px;
+    flex: 1;
+    max-width: 420px;
+  }
+  .frame-url::before {
+    content: "";
+    width: 8px; height: 8px;
+    border: 1.5px solid var(--green-deep);
+    border-bottom: none; border-right: none;
+    border-radius: 2px 2px 0 0;
+    flex-shrink: 0;
+    transform: translateY(1px);
+  }
+
+  /* ---- Dashboard (Keeper) ---- */
+  .app {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: 640px;
+    background: var(--cream-light);
+  }
+  .app-sidebar {
+    background: var(--forest);
+    color: var(--cream);
+    padding: 28px 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  .app-brand {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 20px;
+    margin-bottom: 40px;
+    color: var(--cream);
+  }
+  .app-brand svg { width: 24px; height: 24px; }
+  .app-nav {
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .app-nav-item {
+    padding: 9px 12px;
+    font-size: 13px;
+    color: rgba(245, 239, 226, 0.7);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 10px;
+    transition: background 0.15s;
+  }
+  .app-nav-item:hover { background: rgba(245, 239, 226, 0.08); color: var(--cream); }
+  .app-nav-item.active {
+    background: rgba(245, 239, 226, 0.12);
+    color: var(--cream);
+    font-weight: 500;
+  }
+  .app-nav-item svg {
+    width: 15px; height: 15px;
+    stroke: currentColor; stroke-width: 1.5;
+    fill: none; flex-shrink: 0;
+  }
+  .app-nav-section {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(245, 239, 226, 0.4);
+    margin: 28px 12px 12px;
+    font-weight: 500;
+  }
+  .app-user {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 0.5px solid rgba(245, 239, 226, 0.12);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .avatar {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--brass);
+    color: var(--cream);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .app-user-name { font-size: 13px; color: var(--cream); font-weight: 500; }
+  .app-user-sub { font-size: 11px; color: rgba(245, 239, 226, 0.55); }
+
+  .app-main { padding: 36px 40px; overflow: auto; }
+  .app-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 32px; }
+  .app-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 30px;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+    margin-bottom: 4px;
+  }
+  .app-subtitle {
+    font-size: 14px;
+    color: var(--forest-soft);
+  }
+  .btn {
+    padding: 9px 16px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: 0.5px solid var(--line);
+    background: white;
+    color: var(--forest);
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn:hover { border-color: var(--brass); }
+  .btn.primary {
+    background: var(--forest);
+    color: var(--cream);
+    border-color: var(--forest);
+  }
+  .btn.primary:hover { background: var(--brass-deep); border-color: var(--brass-deep); }
+  .btn.brass {
+    background: var(--brass);
+    color: var(--cream);
+    border-color: var(--brass);
+  }
+  .btn.brass:hover { background: var(--brass-light); }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .stat-card {
+    background: white;
+    border: 0.5px solid var(--line);
+    border-radius: 8px;
+    padding: 18px 20px;
+  }
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--forest-soft);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .stat-value {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 32px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .stat-delta {
+    font-size: 12px;
+    color: var(--green-deep);
+    margin-top: 8px;
+  }
+  .stat-delta.neutral { color: var(--forest-soft); }
+
+  .table-card {
+    background: white;
+    border: 0.5px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+  .table-header {
+    padding: 16px 22px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 0.5px solid var(--line);
+  }
+  .table-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 18px;
+    font-weight: 500;
+  }
+  .table-filter {
+    display: flex; gap: 0;
+    background: var(--cream-light);
+    border-radius: 4px;
+    padding: 2px;
+  }
+  .filter-chip {
+    padding: 5px 12px;
+    font-size: 12px;
+    color: var(--forest-soft);
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .filter-chip.active {
+    background: white;
+    color: var(--forest);
+    font-weight: 500;
+    box-shadow: 0 1px 2px rgba(31,58,46,0.06);
+  }
+  .stays-table { width: 100%; border-collapse: collapse; }
+  .stays-table th {
+    text-align: left;
+    padding: 11px 22px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--forest-soft);
+    border-bottom: 0.5px solid var(--line);
+    background: var(--cream-light);
+  }
+  .stays-table td {
+    padding: 16px 22px;
+    font-size: 14px;
+    border-bottom: 0.5px solid var(--line-soft);
+    vertical-align: middle;
+  }
+  .stays-table tr:last-child td { border-bottom: none; }
+  .stays-table tr:hover { background: var(--cream-light); }
+
+  .guest-cell { display: flex; align-items: center; gap: 10px; }
+  .guest-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--cream);
+    color: var(--forest);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 500;
+    border: 0.5px solid var(--line);
+  }
+  .guest-avatar.brass { background: var(--brass); color: var(--cream); border: none; }
+  .guest-avatar.forest { background: var(--forest-soft); color: var(--cream); border: none; }
+  .guest-name { font-weight: 500; font-size: 14px; }
+  .guest-sub { font-size: 12px; color: var(--forest-soft); }
+
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 3px;
+    letter-spacing: 0.01em;
+  }
+  .status-badge::before {
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+  }
+  .status-signed { background: var(--green-bg); color: var(--green-deep); }
+  .status-signed::before { background: var(--green-deep); }
+  .status-pending { background: var(--amber-bg); color: var(--brass-deep); }
+  .status-pending::before { background: var(--brass); }
+  .status-declined { background: var(--red-bg); color: var(--red-deep); }
+  .status-declined::before { background: var(--red-deep); }
+  .status-notsent { background: var(--cream-light); color: var(--forest-soft); }
+  .status-notsent::before { background: rgba(31,58,46,0.35); }
+
+  .row-flag {
+    background: rgba(194, 104, 60, 0.05);
+    border-left: 3px solid var(--brass);
+  }
+  .row-alert {
+    background: rgba(139, 58, 40, 0.04);
+    border-left: 3px solid var(--red-deep);
+  }
+
+  .risk-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 3px 9px 3px 7px;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 3px;
+    letter-spacing: 0.01em;
+    position: relative;
+    cursor: help;
+  }
+  .risk-pill::before {
+    content: "";
+    width: 5px; height: 5px;
+    border-radius: 50%;
+  }
+  .risk-calm { background: var(--green-bg); color: var(--green-deep); }
+  .risk-calm::before { background: var(--green-deep); }
+  .risk-watch { background: var(--amber-bg); color: var(--brass-deep); }
+  .risk-watch::before { background: var(--brass); }
+  .risk-elevated { background: var(--red-bg); color: var(--red-deep); }
+  .risk-elevated::before { background: var(--red-deep); }
+
+  .risk-pill .tip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--forest);
+    color: var(--cream);
+    padding: 12px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.5;
+    width: 260px;
+    text-align: left;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+    z-index: 20;
+    box-shadow: 0 6px 24px rgba(31,58,46,0.15);
+  }
+  .risk-pill .tip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--forest);
+  }
+  .risk-pill:hover .tip { opacity: 1; }
+  .tip-label {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brass-light);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .tip-signal {
+    display: flex;
+    gap: 8px;
+    padding: 3px 0;
+    color: rgba(245,239,226,0.88);
+  }
+  .tip-signal::before {
+    content: "—";
+    color: var(--brass-light);
+    flex-shrink: 0;
+  }
+
+  .action-link {
+    color: var(--forest);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border-bottom: 0.5px solid var(--forest);
+    padding-bottom: 1px;
+  }
+  .action-link:hover { color: var(--brass-deep); border-color: var(--brass-deep); }
+  .action-link.primary { color: var(--brass-deep); border-color: var(--brass-deep); }
+
+  .activity-card {
+    background: white;
+    border: 0.5px solid var(--line);
+    border-radius: 10px;
+    padding: 22px;
+  }
+  .activity-item {
+    display: flex; gap: 14px; align-items: start;
+    padding: 12px 0;
+    border-bottom: 0.5px solid var(--line-soft);
+  }
+  .activity-item:last-child { border-bottom: none; }
+  .activity-item:first-child { padding-top: 4px; }
+  .activity-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--brass);
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+  .activity-dot.green { background: var(--green-deep); }
+  .activity-dot.forest { background: var(--forest); }
+  .activity-text { font-size: 13px; color: var(--forest); }
+  .activity-sub { font-size: 12px; color: var(--forest-soft); margin-top: 2px; }
+
+  .two-col { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+
+  /* ---- Stay detail ---- */
+  .stay-detail { padding: 36px 40px; background: var(--cream-light); }
+  .breadcrumb { font-size: 12px; color: var(--forest-soft); margin-bottom: 14px; }
+  .breadcrumb a { color: var(--forest-soft); text-decoration: none; }
+  .breadcrumb span { margin: 0 8px; opacity: 0.5; }
+  .stay-head { display: flex; justify-content: space-between; align-items: start; margin-bottom: 32px; }
+  .stay-head h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .stay-meta { font-size: 13px; color: var(--forest-soft); display: flex; gap: 14px; }
+  .stay-meta span { display: flex; align-items: center; gap: 6px; }
+  .stay-body { display: grid; grid-template-columns: 1fr 320px; gap: 24px; }
+
+  .card {
+    background: white;
+    border: 0.5px solid var(--line);
+    border-radius: 10px;
+    padding: 22px;
+    margin-bottom: 16px;
+  }
+  .card-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px;
+  }
+  .card-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 17px;
+    font-weight: 500;
+  }
+  .timeline-item {
+    display: flex; gap: 14px; padding: 14px 0;
+    border-top: 0.5px solid var(--line-soft);
+  }
+  .timeline-item:first-child { border-top: none; padding-top: 4px; }
+  .timeline-time {
+    flex-shrink: 0;
+    width: 82px;
+    font-size: 12px;
+    color: var(--forest-soft);
+    font-family: 'SF Mono', Menlo, monospace;
+    padding-top: 2px;
+  }
+  .timeline-content { flex: 1; font-size: 13.5px; }
+  .timeline-event { color: var(--forest); font-weight: 500; margin-bottom: 3px; }
+  .timeline-sub { color: var(--forest-soft); font-size: 12.5px; line-height: 1.5; }
+  .timeline-tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 2px;
+    font-weight: 500;
+    margin-left: 8px;
+    background: var(--cream-light);
+    color: var(--forest-soft);
+  }
+  .timeline-tag.brass { background: var(--amber-bg); color: var(--brass-deep); }
+  .timeline-tag.red { background: var(--red-bg); color: var(--red-deep); }
+
+  .meta-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 13px; border-bottom: 0.5px solid var(--line-soft); }
+  .meta-row:last-child { border-bottom: none; }
+  .meta-label { color: var(--forest-soft); }
+  .meta-value { font-weight: 500; }
+
+  .evidence-thumb {
+    display: flex; gap: 10px; padding: 10px 0;
+    border-top: 0.5px solid var(--line-soft);
+  }
+  .evidence-thumb:first-child { border-top: none; }
+  .evidence-icon {
+    width: 40px; height: 40px;
+    background: var(--cream-light);
+    border: 0.5px solid var(--line);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--forest-soft);
+    flex-shrink: 0;
+  }
+  .evidence-icon svg { width: 16px; height: 16px; stroke-width: 1.5; fill: none; stroke: currentColor; }
+  .evidence-body { flex: 1; font-size: 13px; line-height: 1.45; }
+  .evidence-name { font-weight: 500; }
+  .evidence-sub { color: var(--forest-soft); font-size: 12px; }
+
+  /* ---- Record (dispute) ---- */
+  .record-layout { display: grid; grid-template-columns: 1fr 1.3fr; gap: 24px; padding: 36px 40px; background: var(--cream-light); }
+  .readiness {
+    background: var(--forest);
+    color: var(--cream);
+    border-radius: 10px;
+    padding: 22px;
+    margin-bottom: 16px;
+  }
+  .readiness h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 4px;
+  }
+  .readiness-label {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--brass-light);
+    margin-bottom: 10px;
+  }
+  .readiness-score {
+    color: var(--brass-light);
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+  }
+  .readiness-checklist { margin-top: 18px; }
+  .readiness-checklist li {
+    list-style: none;
+    font-size: 13px;
+    padding: 7px 0;
+    color: rgba(245, 239, 226, 0.88);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .check-mark {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--brass);
+    color: var(--forest);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  .letter {
+    background: white;
+    border: 0.5px solid var(--line);
+    border-radius: 10px;
+    padding: 40px 44px;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--forest);
+  }
+  .letter-head { margin-bottom: 28px; }
+  .letter-date { font-size: 12px; color: var(--forest-soft); font-family: 'Inter', sans-serif; letter-spacing: 0.04em; margin-bottom: 16px; }
+  .letter-subject {
+    font-size: 16px; font-weight: 500; margin-bottom: 4px;
+  }
+  .letter-ref { font-size: 12px; color: var(--forest-soft); font-family: 'Inter', sans-serif; }
+  .letter p { margin-bottom: 18px; }
+  .letter .highlight {
+    background: var(--amber-bg);
+    padding: 0 4px;
+    border-radius: 2px;
+  }
+  .letter-actions {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 0.5px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* ---- Welcome (guest) ---- */
+  .phone-wrap { display: flex; justify-content: center; padding: 48px; background: var(--cream-light); }
+  .phone {
+    width: 380px;
+    border: 0.5px solid var(--line);
+    border-radius: 20px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 1px 2px rgba(31,58,46,0.04), 0 12px 40px rgba(31,58,46,0.08);
+  }
+  .phone-status {
+    background: var(--cream-light);
+    padding: 8px 20px;
+    font-size: 11px;
+    color: var(--forest-soft);
+    display: flex; justify-content: space-between;
+    font-family: 'SF Mono', Menlo, monospace;
+  }
+  .phone-body { padding: 28px 24px 24px; }
+  .phone-brand {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 18px;
+    margin-bottom: 32px;
+  }
+  .phone-brand svg { width: 22px; height: 22px; }
+  .phone-progress {
+    display: flex; gap: 4px; margin-bottom: 28px;
+  }
+  .prog-bar {
+    flex: 1; height: 3px;
+    background: var(--line);
+    border-radius: 2px;
+  }
+  .prog-bar.active { background: var(--brass); }
+  .phone h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    margin-bottom: 10px;
+  }
+  .phone h2 em { font-style: italic; color: var(--brass-deep); }
+  .phone-lead {
+    font-size: 14px; color: var(--forest-soft);
+    margin-bottom: 22px;
+    line-height: 1.55;
+  }
+  .stay-summary {
+    background: var(--cream-light);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 24px;
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+  .stay-summary-row { display: flex; justify-content: space-between; }
+  .stay-summary-row .lbl { color: var(--forest-soft); }
+
+  .rule {
+    border: 0.5px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    display: flex; gap: 12px; align-items: start;
+    transition: all 0.15s;
+  }
+  .rule.checked {
+    background: var(--green-bg);
+    border-color: var(--green-deep);
+  }
+  .rule-check {
+    width: 20px; height: 20px;
+    border: 1.5px solid var(--line);
+    border-radius: 4px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+    background: white;
+  }
+  .rule.checked .rule-check {
+    background: var(--green-deep);
+    border-color: var(--green-deep);
+    color: white;
+  }
+  .rule.checked .rule-check svg { display: block; }
+  .rule-check svg { width: 12px; height: 12px; display: none; stroke: currentColor; stroke-width: 3; fill: none; }
+  .rule-body { flex: 1; }
+  .rule-title { font-size: 14px; font-weight: 500; margin-bottom: 2px; }
+  .rule-desc { font-size: 12px; color: var(--forest-soft); line-height: 1.45; }
+
+  .sign-box {
+    margin-top: 12px;
+    padding-top: 20px;
+    border-top: 0.5px solid var(--line);
+  }
+  .sign-label { font-size: 12px; color: var(--forest-soft); margin-bottom: 8px; }
+  .sign-field {
+    width: 100%;
+    border: none;
+    border-bottom: 1.5px solid var(--forest);
+    padding: 8px 0;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 20px;
+    font-style: italic;
+    color: var(--forest);
+    background: transparent;
+    outline: none;
+  }
+  .sign-confirm {
+    font-size: 11.5px;
+    color: var(--forest-soft);
+    margin-top: 10px;
+    line-height: 1.5;
+  }
+  .phone-cta {
+    width: 100%;
+    margin-top: 20px;
+    padding: 14px;
+    background: var(--forest);
+    color: var(--cream);
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  /* ---- Callouts between sections ---- */
+  .callout {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 24px 28px;
+    border-left: 3px solid var(--brass);
+    background: var(--cream-light);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--forest-soft);
+    font-style: italic;
+    font-family: 'Fraunces', Georgia, serif;
+  }
+  .callout strong { color: var(--forest); font-style: normal; font-weight: 500; }
+
+  footer {
+    padding: 64px 48px 48px;
+    border-top: 0.5px solid var(--line);
+    color: var(--muted);
+    font-size: 13px;
+    background: var(--cream);
+  }
+  .footer-grid {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 24px;
+  }
+  .footer-brand { display: flex; align-items: center; gap: 12px; }
+  .footer-links { display: flex; gap: 32px; }
+  .footer-links a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--forest); }
+
+  @media (max-width: 900px) {
+    nav { padding: 18px 24px; }
+    .nav-links { gap: 18px; }
+    .nav-links a:not(.nav-cta):not(.active) { display: none; }
+    .page-hero { padding: 140px 24px 60px; }
+    .section { padding: 60px 24px 80px; }
+    .app { grid-template-columns: 1fr; }
+    .app-sidebar { display: none; }
+    .app-main, .stay-detail, .record-layout { padding: 24px; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .two-col { grid-template-columns: 1fr; }
+    .stay-body, .record-layout { grid-template-columns: 1fr; }
+    .phone-wrap { padding: 24px; }
+    .phone { width: 100%; max-width: 380px; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="index.html" class="brand">
+    <svg class="brand-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 14 L16 4 L29 14" stroke-width="2.2"/>
+      <path d="M6 14 L6 27"/>
+      <path d="M26 14 L26 27"/>
+      <path d="M3 27 L29 27" stroke-width="2.2"/>
+      <rect x="13" y="18" width="6" height="9" fill="currentColor" stroke="none"/>
+      <circle cx="16" cy="11" r="1.2" fill="var(--brass)" stroke="none"/>
+    </svg>
+    Porch
+  </a>
+  <div class="nav-links">
+    <a href="product.html" class="active">Product</a>
+    <a href="index.html#how">How it works</a>
+    <a href="index.html#why">Why Porch</a>
+    <a href="index.html#pricing">Pricing</a>
+    <a href="index.html#waitlist" class="nav-cta">Join waitlist</a>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="eyebrow">The product</div>
+  <h1>Quiet tools <em>for confident hosts.</em></h1>
+  <p>Porch sits in the background of how you already host. A light dashboard to track your stays, a clean Welcome for your guests, and a Record that assembles itself when you need it most.</p>
+</section>
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-label">01. The Keeper</div>
+    <div class="section-title">Your dashboard — <em>every stay, at a glance.</em></div>
+    <p class="section-lead">The Keeper is where you check in on your stays. Who's coming, who's signed the Welcome, who needs a nudge, and who's raising a flag. Everything surfaced, nothing hidden in a sub-menu.</p>
+  </div>
+
+  <div class="frame">
+    <div class="frame-top">
+      <div class="frame-dot"></div>
+      <div class="frame-dot"></div>
+      <div class="frame-dot"></div>
+      <div class="frame-url">porch.host/keeper</div>
+    </div>
+    <div class="app">
+      <aside class="app-sidebar">
+        <div class="app-brand">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 14 L16 4 L29 14" stroke-width="2.2"/>
+            <path d="M6 14 L6 27"/>
+            <path d="M26 14 L26 27"/>
+            <path d="M3 27 L29 27" stroke-width="2.2"/>
+            <rect x="13" y="18" width="6" height="9" fill="currentColor" stroke="none"/>
+          </svg>
+          Porch
+        </div>
+        <div class="app-nav">
+          <div class="app-nav-item active">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+            Keeper
+          </div>
+          <div class="app-nav-item">
+            <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 3v4M17 3v4M3 11h18"/></svg>
+            Stays
+          </div>
+          <div class="app-nav-item">
+            <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+            Welcomes
+          </div>
+          <div class="app-nav-item">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg>
+            Records
+          </div>
+          <div class="app-nav-section">Settings</div>
+          <div class="app-nav-item">
+            <svg viewBox="0 0 24 24"><path d="M3 12l2-2 4 4 10-10 2 2L9 18z"/></svg>
+            House rules
+          </div>
+          <div class="app-nav-item">
+            <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 8l9 6 9-6"/></svg>
+            Email forwarding
+          </div>
+          <div class="app-nav-item">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Account
+          </div>
+        </div>
+        <div class="app-user">
+          <div class="avatar">RN</div>
+          <div>
+            <div class="app-user-name">Ricky N.</div>
+            <div class="app-user-sub">2 listings</div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="app-main">
+        <div class="app-header">
+          <div>
+            <div class="app-title">Good morning, Ricky.</div>
+            <div class="app-subtitle">6 active stays. 2 flagged Elevated — worth a look before arrival.</div>
+          </div>
+          <button class="btn primary">+ Add listing</button>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-label">Stays this month</div>
+            <div class="stat-value">8</div>
+            <div class="stat-delta neutral">2 arriving this week</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Welcome completion</div>
+            <div class="stat-value">87%</div>
+            <div class="stat-delta">▲ 6% from last month</div>
+          </div>
+          <div class="stat-card" style="background: rgba(139, 58, 40, 0.04); border: 0.5px solid rgba(139, 58, 40, 0.25);">
+            <div class="stat-label" style="color: var(--red-deep);">Needs attention</div>
+            <div class="stat-value" style="color: var(--red-deep);">2</div>
+            <div class="stat-delta" style="color: var(--red-deep);">Elevated risk · review below</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Disputes won</div>
+            <div class="stat-value">2<span style="font-size:18px;color:var(--forest-soft);"> / 2</span></div>
+            <div class="stat-delta">with Porch evidence</div>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="table-card">
+            <div class="table-header">
+              <div class="table-title">Upcoming stays</div>
+              <div class="table-filter">
+                <div class="filter-chip active">All</div>
+                <div class="filter-chip">Calm</div>
+                <div class="filter-chip">Watch</div>
+                <div class="filter-chip">Elevated</div>
+              </div>
+            </div>
+            <table class="stays-table">
+              <thead>
+                <tr><th>Guest</th><th>Arrives</th><th>Read</th><th>Welcome</th><th></th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="guest-cell">
+                      <div class="guest-avatar brass">NS</div>
+                      <div>
+                        <div class="guest-name">Nancy S.</div>
+                        <div class="guest-sub">Catskills Retreat · 5 guests</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><div style="font-weight:500;">Thu, Oct 15</div><div class="guest-sub">in 3 days</div></td>
+                  <td>
+                    <span class="risk-pill risk-calm">Calm
+                      <span class="tip">
+                        <span class="tip-label">Why Calm</span>
+                        <span class="tip-signal">4 reviews, identity verified</span>
+                        <span class="tip-signal">Specific intro (Sheep &amp; Wool Festival)</span>
+                        <span class="tip-signal">Booked 32 days out</span>
+                        <span class="tip-signal">Signed Welcome in 4 min</span>
+                      </span>
+                    </span>
+                  </td>
+                  <td><span class="status-badge status-signed">Signed</span></td>
+                  <td style="text-align:right;"><a class="action-link">View details →</a></td>
+                </tr>
+                <tr class="row-flag">
+                  <td>
+                    <div class="guest-cell">
+                      <div class="guest-avatar">DL</div>
+                      <div>
+                        <div class="guest-name">David L.</div>
+                        <div class="guest-sub">Catskills Retreat · 3 guests</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><div style="font-weight:500;">Sat, Oct 17</div><div class="guest-sub">in 5 days</div></td>
+                  <td>
+                    <span class="risk-pill risk-watch">Watch
+                      <span class="tip">
+                        <span class="tip-label">Why Watch</span>
+                        <span class="tip-signal">0 prior reviews</span>
+                        <span class="tip-signal">No intro message provided</span>
+                        <span class="tip-signal">Welcome not yet signed</span>
+                      </span>
+                    </span>
+                  </td>
+                  <td><span class="status-badge status-pending">Pending · reminded 1×</span></td>
+                  <td style="text-align:right;"><a class="action-link primary">Send reminder →</a></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="guest-cell">
+                      <div class="guest-avatar forest">MP</div>
+                      <div>
+                        <div class="guest-name">Maya P.</div>
+                        <div class="guest-sub">Williamsburg Loft · 2 guests</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><div style="font-weight:500;">Sun, Oct 19</div><div class="guest-sub">in 7 days</div></td>
+                  <td>
+                    <span class="risk-pill risk-calm">Calm
+                      <span class="tip">
+                        <span class="tip-label">Why Calm</span>
+                        <span class="tip-signal">28 reviews, identity verified</span>
+                        <span class="tip-signal">Based in Brooklyn, NY</span>
+                        <span class="tip-signal">Signed Welcome same day</span>
+                      </span>
+                    </span>
+                  </td>
+                  <td><span class="status-badge status-signed">Signed</span></td>
+                  <td style="text-align:right;"><a class="action-link">View details →</a></td>
+                </tr>
+                <tr class="row-alert">
+                  <td>
+                    <div class="guest-cell">
+                      <div class="guest-avatar brass">JT</div>
+                      <div>
+                        <div class="guest-name">Jordan T.</div>
+                        <div class="guest-sub">Catskills Retreat · 6 guests</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><div style="font-weight:500;">Fri, Oct 24</div><div class="guest-sub">in 12 days</div></td>
+                  <td>
+                    <span class="risk-pill risk-elevated">Elevated
+                      <span class="tip">
+                        <span class="tip-label">Why Elevated</span>
+                        <span class="tip-signal">Declined to sign Welcome</span>
+                        <span class="tip-signal">At listing max occupancy (6/6)</span>
+                        <span class="tip-signal">Single-night Friday booking</span>
+                        <span class="tip-signal">1 prior review</span>
+                      </span>
+                    </span>
+                  </td>
+                  <td><span class="status-badge status-declined">Declined</span></td>
+                  <td style="text-align:right;"><a class="action-link primary">Start documentation →</a></td>
+                </tr>
+                <tr class="row-alert">
+                  <td>
+                    <div class="guest-cell">
+                      <div class="guest-avatar">AR</div>
+                      <div>
+                        <div class="guest-name">Alex R.</div>
+                        <div class="guest-sub">Catskills Retreat · 5 guests</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><div style="font-weight:500;">Sat, Oct 25</div><div class="guest-sub">in 13 days</div></td>
+                  <td>
+                    <span class="risk-pill risk-elevated">Elevated
+                      <span class="tip">
+                        <span class="tip-label">Why Elevated</span>
+                        <span class="tip-signal">Booked 14 hours before check-in</span>
+                        <span class="tip-signal">0 prior reviews</span>
+                        <span class="tip-signal">Identity not verified</span>
+                        <span class="tip-signal">Single-night weekend stay</span>
+                      </span>
+                    </span>
+                  </td>
+                  <td><span class="status-badge status-pending">Pending</span></td>
+                  <td style="text-align:right;"><a class="action-link primary">Send reminder →</a></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="guest-cell">
+                      <div class="guest-avatar">EK</div>
+                      <div>
+                        <div class="guest-name">Elena K.</div>
+                        <div class="guest-sub">Williamsburg Loft · 2 guests</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><div style="font-weight:500;">Mon, Oct 27</div><div class="guest-sub">in 15 days</div></td>
+                  <td>
+                    <span class="risk-pill risk-watch">Watch
+                      <span class="tip">
+                        <span class="tip-label">Why Watch</span>
+                        <span class="tip-signal">2 prior reviews</span>
+                        <span class="tip-signal">Welcome not yet sent</span>
+                        <span class="tip-signal">Specific intro (business travel)</span>
+                      </span>
+                    </span>
+                  </td>
+                  <td><span class="status-badge status-notsent">Not sent</span></td>
+                  <td style="text-align:right;"><a class="action-link">Send Welcome →</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="activity-card">
+            <div class="card-head">
+              <div class="card-title">Recent activity</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot green"></div>
+              <div>
+                <div class="activity-text">Nancy S. signed the Welcome</div>
+                <div class="activity-sub">2 hours ago · Catskills Retreat</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot"></div>
+              <div>
+                <div class="activity-text">Reminder sent to David L.</div>
+                <div class="activity-sub">Yesterday · 6:14 PM</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot forest"></div>
+              <div>
+                <div class="activity-text">New booking detected</div>
+                <div class="activity-sub">HMQ8EACB4B · Nancy S. · 2 days ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot"></div>
+              <div>
+                <div class="activity-text">Record submitted to Airbnb</div>
+                <div class="activity-sub">3 days ago · Jordan T. · Pending review</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot green"></div>
+              <div>
+                <div class="activity-text">Dispute resolved in your favor</div>
+                <div class="activity-sub">Last week · Retaliatory review removed</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</section>
+
+<div class="callout">
+  The <strong>Read</strong> column isn't a credit score. It's a plain-language signal — <strong>Calm, Watch, or Elevated</strong> — built from facts in the booking: review history, verification, booking lead time, Welcome completion. Hover any pill to see the specific signals. You decide what to do with the read; Porch just makes sure you don't miss it.
+</div>
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-label">02. Stay detail</div>
+    <div class="section-title">Every stay <em>has a page.</em></div>
+    <p class="section-lead">Click any booking to see the full picture: who's arriving, what they agreed to, what's been documented, and what happens if something goes sideways. Everything in one place, chronological, exportable.</p>
+  </div>
+
+  <div class="frame">
+    <div class="frame-top">
+      <div class="frame-dot"></div>
+      <div class="frame-dot"></div>
+      <div class="frame-dot"></div>
+      <div class="frame-url">porch.host/stays/HMQ8EACB4B</div>
+    </div>
+    <div class="stay-detail">
+      <div class="breadcrumb">
+        <a>Keeper</a><span>›</span><a>Stays</a><span>›</span>Nancy S. · Catskills Retreat
+      </div>
+      <div class="stay-head">
+        <div>
+          <h2>Nancy Shedd</h2>
+          <div class="stay-meta">
+            <span>Catskills Retreat</span>
+            <span>·</span>
+            <span>Oct 15 — Oct 18</span>
+            <span>·</span>
+            <span>5 guests</span>
+            <span>·</span>
+            <span style="font-family:'SF Mono',monospace;font-size:11px;">HMQ8EACB4B</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn">Message on Airbnb ↗</button>
+          <button class="btn primary">Open Record</button>
+        </div>
+      </div>
+
+      <div class="stay-body">
+        <div>
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title">Stay timeline</div>
+              <span style="font-size:12px;color:var(--forest-soft);">All times EST</span>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-time">Oct 14<br>1:12 PM</div>
+              <div class="timeline-content">
+                <div class="timeline-event">Booking detected <span class="timeline-tag">Porch</span></div>
+                <div class="timeline-sub">Confirmation email parsed from Airbnb. Guest intro: "Coming with knitting friends for Sheep and Wool Festival in Rhinebeck."</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-time">Oct 14<br>1:14 PM</div>
+              <div class="timeline-content">
+                <div class="timeline-event">Welcome link prepared</div>
+                <div class="timeline-sub">Draft Airbnb message copied to clipboard. Awaiting host send.</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-time">Oct 14<br>1:31 PM</div>
+              <div class="timeline-content">
+                <div class="timeline-event">Welcome link sent to guest <span class="timeline-tag">Host</span></div>
+                <div class="timeline-sub">Sent via Airbnb message thread.</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-time">Oct 14<br>2:47 PM</div>
+              <div class="timeline-content">
+                <div class="timeline-event">Welcome signed <span class="timeline-tag brass">Signed</span></div>
+                <div class="timeline-sub">Nancy Shedd agreed to all 7 house rules. Signed from iPhone (Rochester, NY area). Receipt PDF filed.</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-time">Oct 15<br>3:12 PM</div>
+              <div class="timeline-content">
+                <div class="timeline-event">Guest checked in</div>
+                <div class="timeline-sub">Camera detected entry. Stay period active.</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-time">Oct 16<br>10:47 PM</div>
+              <div class="timeline-content">
+                <div class="timeline-event">Signal logged <span class="timeline-tag">Porch</span></div>
+                <div class="timeline-sub">Noise event detected (68 dB sustained 18 min). Auto-resolved before midnight.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card" style="border: 0.5px solid rgba(45, 90, 59, 0.35); background: rgba(232, 240, 228, 0.35);">
+            <div class="card-head" style="margin-bottom: 10px;">
+              <div class="card-title">Porch Read</div>
+              <span class="risk-pill risk-calm" style="cursor: default;">Calm</span>
+            </div>
+            <div style="font-size: 12.5px; line-height: 1.55; color: var(--forest-soft); margin-bottom: 12px;">Signals align with a typical stay. No action needed — Porch will continue watching in the background.</div>
+            <div style="font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--forest-soft); font-weight: 500; margin-bottom: 8px;">Based on</div>
+            <div style="font-size: 12.5px; line-height: 1.7; color: var(--forest);">
+              <div>— 4 reviews, identity verified</div>
+              <div>— Specific intro (Sheep &amp; Wool Festival)</div>
+              <div>— Booked 32 days in advance</div>
+              <div>— Signed Welcome within 4 minutes</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title" style="margin-bottom:14px;">Reservation</div>
+            <div class="meta-row"><span class="meta-label">Guest</span><span class="meta-value">Nancy Shedd</span></div>
+            <div class="meta-row"><span class="meta-label">Reviews</span><span class="meta-value">4 · Verified</span></div>
+            <div class="meta-row"><span class="meta-label">From</span><span class="meta-value">Rochester, NY</span></div>
+            <div class="meta-row"><span class="meta-label">Check-in</span><span class="meta-value">Oct 15, 3:00 PM</span></div>
+            <div class="meta-row"><span class="meta-label">Check-out</span><span class="meta-value">Oct 18, 11:00 AM</span></div>
+            <div class="meta-row"><span class="meta-label">Guest count</span><span class="meta-value">5 adults</span></div>
+            <div class="meta-row"><span class="meta-label">Payout</span><span class="meta-value">$1,789.65</span></div>
+          </div>
+
+          <div class="card">
+            <div class="card-title" style="margin-bottom:14px;">Evidence on file</div>
+            <div class="evidence-thumb">
+              <div class="evidence-icon"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+              <div class="evidence-body">
+                <div class="evidence-name">Signed Welcome</div>
+                <div class="evidence-sub">PDF · 7 rules · Oct 14, 2:47 PM</div>
+              </div>
+            </div>
+            <div class="evidence-thumb">
+              <div class="evidence-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 8l9 6 9-6"/></svg></div>
+              <div class="evidence-body">
+                <div class="evidence-name">Guest intro message</div>
+                <div class="evidence-sub">Captured from booking email</div>
+              </div>
+            </div>
+            <div class="evidence-thumb">
+              <div class="evidence-icon"><svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1v-6h3zM3 19a2 2 0 0 0 2 2h1v-6H3z"/></svg></div>
+              <div class="evidence-body">
+                <div class="evidence-name">Noise event log</div>
+                <div class="evidence-sub">1 event · Oct 16, 10:47 PM</div>
+              </div>
+            </div>
+            <div class="evidence-thumb">
+              <div class="evidence-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5M12 3v12"/></svg></div>
+              <div class="evidence-body">
+                <div class="evidence-name">Add evidence</div>
+                <div class="evidence-sub">Photo, email forward, camera clip</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="callout">
+  Every signal is timestamped. Every file is hashed. Nothing can be altered after the fact — which is exactly what Airbnb's dispute team needs to see when they're deciding whether to remove a review.
+</div>
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-label">03. The Record</div>
+    <div class="section-title">When you need it, <em>it's already written.</em></div>
+    <p class="section-lead">If a stay goes sideways — a retaliatory review, a chargeback, a dispute — the Record is ready. Porch assembles the evidence, drafts the letter in Airbnb's own policy language, and hands you a one-click submission. The tool does the hard work; you review, edit, send.</p>
+  </div>
+
+  <div class="frame">
+    <div class="frame-top">
+      <div class="frame-dot"></div>
+      <div class="frame-dot"></div>
+      <div class="frame-dot"></div>
+      <div class="frame-url">porch.host/records/HMQ8EACB4B</div>
+    </div>
+    <div class="record-layout">
+      <div>
+        <div class="readiness">
+          <div class="readiness-label">Dispute readiness</div>
+          <h3>Strong <span class="readiness-score">— 5 of 5</span></h3>
+          <ul class="readiness-checklist">
+            <li><span class="check-mark">✓</span> Signed Welcome on file</li>
+            <li><span class="check-mark">✓</span> Policy violation documented</li>
+            <li><span class="check-mark">✓</span> Violation reported before review</li>
+            <li><span class="check-mark">✓</span> Third-party corroboration</li>
+            <li><span class="check-mark">✓</span> Retaliation timeline clear</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-title" style="margin-bottom:14px;">Evidence attached</div>
+          <div class="evidence-thumb">
+            <div class="evidence-icon"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+            <div class="evidence-body">
+              <div class="evidence-name">Welcome · signed Oct 14</div>
+              <div class="evidence-sub">All 7 rules agreed in writing</div>
+            </div>
+          </div>
+          <div class="evidence-thumb">
+            <div class="evidence-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 8l9 6 9-6"/></svg></div>
+            <div class="evidence-body">
+              <div class="evidence-name">Neighbor complaint forwarded</div>
+              <div class="evidence-sub">Oct 16, 10:47 PM · Noise</div>
+            </div>
+          </div>
+          <div class="evidence-thumb">
+            <div class="evidence-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></div>
+            <div class="evidence-body">
+              <div class="evidence-name">Smoking evidence · 3 photos</div>
+              <div class="evidence-sub">Oct 17, 9:12 AM</div>
+            </div>
+          </div>
+          <div class="evidence-thumb">
+            <div class="evidence-icon"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+            <div class="evidence-body">
+              <div class="evidence-name">AirCover claim · $350</div>
+              <div class="evidence-sub">Deep clean · Oct 18</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="letter">
+        <div class="letter-head">
+          <div class="letter-date">Oct 19, 2025 — Ready to send</div>
+          <div class="letter-subject">Dispute request · Reservation HMQ8EACB4B</div>
+          <div class="letter-ref">Re: Retaliatory review by Nancy S.</div>
+        </div>
+
+        <p>Dear Airbnb Case Manager,</p>
+        <p>I am writing to request removal of the review left by Nancy S. for reservation <span class="highlight">HMQ8EACB4B</span> under <span class="highlight">Airbnb's Retaliatory Review Policy</span>.</p>
+        <p>On <span class="highlight">October 14, 2025 at 2:47 PM</span>, the guest signed a written acknowledgment of the property's house rules, including prohibitions on smoking, unregistered guests, and quiet hours. The signed agreement is attached.</p>
+        <p>During the stay, the guest violated multiple rules: a neighbor complaint was received on October 16 at 10:47 PM regarding noise, and physical evidence of smoking was documented on October 17 at 9:12 AM with photographs. These violations were reported to the guest and to Airbnb through the Resolution Center on October 18.</p>
+        <p>The guest's 1-star review was posted on <span class="highlight">October 19 at 3:14 PM</span> — approximately 27 hours after I submitted the reimbursement claim for smoking-related deep cleaning. The timing and content of the review establish a clear retaliatory pattern consistent with the policy's three-part test: documented violation, guest notification, and biased review following enforcement.</p>
+        <p>This is my first dispute request in six years of hosting with a 4.98 average rating across 142 reviews. I would be grateful for your review of the attached evidence.</p>
+        <p style="margin-top:24px;">Respectfully,<br>Ricky N.</p>
+
+        <div class="letter-actions">
+          <button class="btn">Edit letter</button>
+          <button class="btn brass">Submit to Airbnb →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="callout">
+  Every sentence of the dispute letter is drafted from the evidence Porch already has — nothing to fabricate, nothing to remember. <strong>The Record writes itself because the Welcome filed the groundwork months earlier.</strong>
+</div>
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-label">04. The Welcome</div>
+    <div class="section-title">What your guests see — <em>calm, clear, 90 seconds.</em></div>
+    <p class="section-lead">Guests receive the link through Airbnb's own message thread. They tap, they review, they sign. No app to download. No account to create. Mobile-first, because that's where they'll read it.</p>
+  </div>
+
+  <div class="frame">
+    <div class="frame-top">
+      <div class="frame-dot"></div>
+      <div class="frame-dot"></div>
+      <div class="frame-dot"></div>
+      <div class="frame-url">porch.host/welcome/a7xk-HMQ8EACB4B</div>
+    </div>
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-status"><span>9:41</span><span>●●●</span></div>
+        <div class="phone-body">
+          <div class="phone-brand">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 14 L16 4 L29 14" stroke-width="2.2"/>
+              <path d="M6 14 L6 27"/>
+              <path d="M26 14 L26 27"/>
+              <path d="M3 27 L29 27" stroke-width="2.2"/>
+              <rect x="13" y="18" width="6" height="9" fill="currentColor" stroke="none"/>
+            </svg>
+            Porch
+          </div>
+          <div class="phone-progress">
+            <div class="prog-bar active"></div>
+            <div class="prog-bar active"></div>
+            <div class="prog-bar active"></div>
+            <div class="prog-bar"></div>
+          </div>
+
+          <h2>Hi Nancy, <em>welcome to the Catskills.</em></h2>
+          <p class="phone-lead">Before your stay, Ricky needs you to confirm a few house rules. Takes about 90 seconds.</p>
+
+          <div class="stay-summary">
+            <div class="stay-summary-row"><span class="lbl">Listing</span><span>Catskills Retreat</span></div>
+            <div class="stay-summary-row"><span class="lbl">Dates</span><span>Oct 15 — Oct 18</span></div>
+            <div class="stay-summary-row"><span class="lbl">Guests</span><span>5 adults</span></div>
+          </div>
+
+          <div class="rule checked">
+            <div class="rule-check"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></div>
+            <div class="rule-body">
+              <div class="rule-title">No smoking anywhere on the property</div>
+              <div class="rule-desc">Smoking triggers a $500 deep-clean fee.</div>
+            </div>
+          </div>
+          <div class="rule checked">
+            <div class="rule-check"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></div>
+            <div class="rule-body">
+              <div class="rule-title">Only registered guests may stay</div>
+              <div class="rule-desc">Additional guests must be added to the booking.</div>
+            </div>
+          </div>
+          <div class="rule checked">
+            <div class="rule-check"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></div>
+            <div class="rule-body">
+              <div class="rule-title">Quiet hours 10 PM – 8 AM</div>
+              <div class="rule-desc">Out of respect for neighbors.</div>
+            </div>
+          </div>
+          <div class="rule">
+            <div class="rule-check"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></div>
+            <div class="rule-body">
+              <div class="rule-title">Pool safety</div>
+              <div class="rule-desc">Adults supervise. No glass near the water.</div>
+            </div>
+          </div>
+
+          <div class="sign-box">
+            <div class="sign-label">Type your full name to sign</div>
+            <div class="sign-field">Nancy Shedd</div>
+            <div class="sign-confirm">Signed Oct 14, 2:47 PM from iPhone · Rochester, NY area. This acknowledgment protects both of us.</div>
+          </div>
+
+          <button class="phone-cta">Finish Welcome →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="callout">
+  Notice what's <strong>not</strong> here: no "download our app," no login, no surveillance language, no legal jargon. The Welcome is designed to feel like walking onto a porch and being greeted — not like checking into a hotel. <strong>That's why guests actually complete it.</strong>
+</div>
+
+<section class="section" style="text-align: center; padding-bottom: 140px;">
+  <div class="section-label" style="display: inline-block; margin-bottom: 14px;">Ready to try it?</div>
+  <h2 style="font-family: 'Fraunces', Georgia, serif; font-size: clamp(32px, 4vw, 48px); font-weight: 400; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 20px;">Join the waitlist.</h2>
+  <p style="font-size: 17px; color: var(--forest-soft); max-width: 50ch; margin: 0 auto 32px; line-height: 1.6;">We're onboarding founding hosts in small batches so we can build the product around real workflows, not assumptions.</p>
+  <a href="index.html#waitlist" class="btn primary" style="padding: 14px 28px; font-size: 15px;">Join the waitlist →</a>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:22px; height:22px; opacity: 0.7;">
+        <path d="M3 14 L16 4 L29 14" stroke-width="2.2"/>
+        <path d="M6 14 L6 27"/>
+        <path d="M26 14 L26 27"/>
+        <path d="M3 27 L29 27" stroke-width="2.2"/>
+        <rect x="13" y="18" width="6" height="9" fill="currentColor" stroke="none"/>
+      </svg>
+      <span>Porch · Built by hosts, for hosts.</span>
+    </div>
+    <div class="footer-links">
+      <a href="product.html">Product</a>
+      <a href="index.html">About</a>
+      <a href="#">Contact</a>
+      <a href="#">Privacy</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 20) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  });
+</script>
+
+</body>
+</html>
