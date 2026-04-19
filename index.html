@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Porch — Where every stay begins</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #1F3A2E;
+    --forest-deep: #142820;
+    --forest-soft: #2D4E3E;
+    --cream: #F5EFE2;
+    --cream-light: #FAF6EC;
+    --brass: #A07D3B;
+    --brass-light: #C49A5A;
+    --brass-deep: #7A5D28;
+    --line: rgba(31, 58, 46, 0.14);
+    --muted: rgba(31, 58, 46, 0.65);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--cream);
+    color: var(--forest);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    padding: 22px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(245, 239, 226, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 100;
+    border-bottom: 0.5px solid transparent;
+    transition: border-color 0.3s;
+  }
+  nav.scrolled { border-bottom-color: var(--line); }
+  .brand {
+    display: flex; align-items: center; gap: 12px;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--forest);
+    text-decoration: none;
+  }
+  .brand-icon { width: 30px; height: 30px; flex-shrink: 0; }
+  .nav-links { display: flex; gap: 36px; align-items: center; font-size: 14px; }
+  .nav-links a { color: var(--forest-soft); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--brass-deep); }
+  .nav-cta {
+    padding: 9px 18px;
+    background: var(--forest);
+    color: var(--cream) !important;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--brass-deep); color: var(--cream) !important; }
+
+  .hero {
+    min-height: 94vh;
+    padding: 160px 48px 100px;
+    display: flex; flex-direction: column; justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .hero-eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--brass-deep);
+    font-weight: 500;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.1s forwards;
+  }
+  .hero h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(44px, 6.4vw, 92px);
+    line-height: 0.97;
+    letter-spacing: -0.035em;
+    font-weight: 400;
+    max-width: 14ch;
+    margin-bottom: 36px;
+    color: var(--forest);
+    opacity: 0;
+    animation: fadeUp 0.9s 0.25s forwards;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--brass-deep);
+    font-weight: 400;
+  }
+  .hero p.lead {
+    font-size: 20px;
+    line-height: 1.55;
+    max-width: 54ch;
+    color: var(--forest-soft);
+    margin-bottom: 52px;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.4s forwards;
+  }
+  .hero-ctas {
+    display: flex; gap: 24px; align-items: center;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.55s forwards;
+  }
+  .btn-primary {
+    background: var(--forest);
+    color: var(--cream);
+    padding: 16px 32px;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .btn-primary:hover { background: var(--brass-deep); transform: translateY(-1px); }
+  .btn-secondary {
+    color: var(--forest);
+    padding: 16px 4px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px solid var(--forest);
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { color: var(--brass-deep); border-color: var(--brass-deep); }
+
+  .hero-mark {
+    position: absolute;
+    top: 180px;
+    right: 48px;
+    width: 340px;
+    height: 340px;
+    opacity: 0.13;
+    pointer-events: none;
+  }
+  .hero-mark svg { width: 100%; height: 100%; }
+
+  section { padding: 130px 48px; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .section-eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--brass-deep);
+    font-weight: 500;
+    margin-bottom: 28px;
+  }
+  .section-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(38px, 4.8vw, 60px);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    font-weight: 400;
+    max-width: 20ch;
+    margin-bottom: 28px;
+  }
+  .section-title em { font-style: italic; color: var(--brass-deep); }
+  .section-lead {
+    font-size: 19px;
+    line-height: 1.55;
+    max-width: 58ch;
+    color: var(--forest-soft);
+  }
+
+  .how-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin-top: 80px;
+    border-top: 0.5px solid var(--line);
+  }
+  .how-step {
+    display: grid;
+    grid-template-columns: 100px 1fr 1.2fr;
+    gap: 48px;
+    padding: 64px 0;
+    border-bottom: 0.5px solid var(--line);
+    align-items: start;
+  }
+  .how-step-num {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 52px;
+    font-weight: 400;
+    color: var(--brass);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-style: italic;
+  }
+  .how-step-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 32px;
+    line-height: 1.15;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    max-width: 20ch;
+  }
+  .how-step-desc {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--forest-soft);
+    max-width: 44ch;
+  }
+  .how-step-tag {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brass-deep);
+    font-weight: 500;
+    border: 0.5px solid var(--brass);
+    padding: 6px 12px;
+    border-radius: 2px;
+  }
+
+  .problem-section {
+    background: var(--forest);
+    color: var(--cream);
+    margin: 0 -48px;
+    padding: 150px 48px;
+    position: relative;
+  }
+  .problem-section::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--brass), transparent);
+  }
+  .problem-section .section-eyebrow { color: var(--brass-light); }
+  .problem-section .section-title { color: var(--cream); max-width: 22ch; }
+  .problem-section .section-title em { color: var(--brass-light); }
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    margin-top: 80px;
+    align-items: start;
+  }
+  .problem-col h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin-bottom: 24px;
+    color: var(--cream);
+    font-style: italic;
+  }
+  .problem-col p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: rgba(245, 239, 226, 0.78);
+    margin-bottom: 18px;
+  }
+  .problem-col.before h3 { color: var(--brass-light); }
+  .problem-col.after h3 { color: var(--cream); }
+  .divider-small {
+    width: 48px;
+    height: 1px;
+    background: var(--brass-light);
+    margin-bottom: 28px;
+  }
+
+  .quote-section { padding: 150px 48px; }
+  .quote-block {
+    max-width: 880px; margin: 0 auto;
+    text-align: center;
+  }
+  .quote-mark {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 112px;
+    line-height: 0.7;
+    color: var(--brass);
+    margin-bottom: 12px;
+    font-style: italic;
+  }
+  .quote-text {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(26px, 3.2vw, 38px);
+    line-height: 1.35;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    margin-bottom: 40px;
+    color: var(--forest);
+  }
+  .quote-text em { font-style: italic; color: var(--brass-deep); }
+  .quote-attr {
+    font-size: 14px;
+    color: var(--forest-soft);
+    letter-spacing: 0.03em;
+  }
+  .quote-attr strong { font-weight: 500; color: var(--forest); }
+
+  .pricing-section { padding: 130px 48px; }
+  .pricing-block {
+    max-width: 880px; margin: 0 auto;
+    text-align: center;
+  }
+  .pricing-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(38px, 4.8vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    font-weight: 400;
+    margin-bottom: 24px;
+  }
+  .pricing-title em { font-style: italic; color: var(--brass-deep); }
+  .pricing-sub {
+    font-size: 18px;
+    color: var(--forest-soft);
+    max-width: 52ch;
+    margin: 0 auto 64px;
+    line-height: 1.5;
+  }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    text-align: left;
+    margin-bottom: 36px;
+  }
+  .pricing-card {
+    background: white;
+    border: 0.5px solid var(--line);
+    border-radius: 8px;
+    padding: 40px 36px;
+    position: relative;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .pricing-card:hover {
+    border-color: var(--brass);
+    transform: translateY(-2px);
+  }
+  .pricing-card.featured {
+    border: 1.5px solid var(--forest);
+    background: var(--forest);
+    color: var(--cream);
+  }
+  .pricing-card.featured:hover { border-color: var(--brass-light); }
+  .pricing-card.featured .tier-name,
+  .pricing-card.featured .tier-features li { color: var(--cream); }
+  .pricing-card.featured .tier-sub,
+  .pricing-card.featured .tier-features li::before { color: rgba(245, 239, 226, 0.7); }
+  .pricing-card.featured .tier-price { color: var(--cream); }
+  .pricing-card.featured .tier-price .dollar { color: var(--brass-light); }
+  .pricing-card.featured .tier-price .per { color: rgba(245, 239, 226, 0.7); }
+  .featured-badge {
+    position: absolute;
+    top: -11px;
+    right: 28px;
+    background: var(--brass);
+    color: var(--cream);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 2px;
+  }
+  .tier-name {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 26px;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    color: var(--forest);
+    margin-bottom: 6px;
+  }
+  .tier-sub {
+    font-size: 14px;
+    color: var(--forest-soft);
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+  .tier-price {
+    display: flex; align-items: baseline; gap: 6px;
+    margin-bottom: 28px;
+    color: var(--forest);
+  }
+  .tier-price .dollar {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 24px;
+    color: var(--brass-deep);
+  }
+  .tier-price .num {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 64px;
+    font-weight: 400;
+    letter-spacing: -0.035em;
+    line-height: 1;
+  }
+  .tier-price .per {
+    font-size: 14px;
+    color: var(--forest-soft);
+  }
+  .tier-features {
+    list-style: none;
+    padding: 0; margin: 0 0 28px;
+  }
+  .tier-features li {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--forest);
+    padding: 8px 0 8px 22px;
+    position: relative;
+    border-top: 0.5px solid rgba(31, 58, 46, 0.08);
+  }
+  .pricing-card.featured .tier-features li {
+    border-top-color: rgba(245, 239, 226, 0.14);
+  }
+  .tier-features li:first-child { border-top: none; }
+  .tier-features li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--brass-deep);
+  }
+  .tier-cta {
+    display: block;
+    text-align: center;
+    padding: 13px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .tier-cta.outline {
+    border: 0.5px solid var(--forest);
+    color: var(--forest);
+  }
+  .tier-cta.outline:hover {
+    background: var(--forest);
+    color: var(--cream);
+  }
+  .tier-cta.solid {
+    background: var(--brass);
+    color: var(--cream);
+  }
+  .tier-cta.solid:hover {
+    background: var(--brass-light);
+  }
+  .pricing-caveat {
+    font-size: 15px;
+    color: var(--forest-soft);
+    font-style: italic;
+    max-width: 48ch;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .flow-section {
+    background: var(--cream-light);
+    margin: 0 -48px;
+    padding: 140px 48px;
+    border-top: 0.5px solid var(--line);
+    border-bottom: 0.5px solid var(--line);
+  }
+  .flow-container { max-width: 1200px; margin: 0 auto; }
+  .flow-diagram {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-top: 72px;
+    align-items: stretch;
+  }
+  .flow-step {
+    background: white;
+    border: 0.5px solid var(--line);
+    border-radius: 8px;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .flow-step:hover { border-color: var(--brass); }
+  .flow-step-num {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 14px;
+    font-style: italic;
+    color: var(--brass);
+    margin-bottom: 16px;
+    letter-spacing: 0.04em;
+  }
+  .flow-step-icon {
+    width: 32px; height: 32px;
+    stroke: var(--forest);
+    stroke-width: 1.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    margin-bottom: 16px;
+  }
+  .flow-step-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    color: var(--forest);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .flow-step-desc {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--forest-soft);
+  }
+  .flow-step-actor {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-top: auto;
+    padding-top: 14px;
+  }
+  .flow-step-actor.guest { color: var(--brass-deep); }
+  .flow-step-actor.host { color: var(--forest-soft); }
+  .flow-step-actor.porch { color: var(--forest); }
+  .flow-arrow {
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 12px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .flow-arrow svg { width: 100%; height: 100%; stroke: var(--brass); stroke-width: 1.2; fill: none; }
+  .flow-legend {
+    display: flex;
+    gap: 28px;
+    justify-content: center;
+    margin-top: 48px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--forest-soft);
+  }
+  .legend-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+  .legend-dot.guest { background: var(--brass); }
+  .legend-dot.host { background: var(--forest-soft); }
+  .legend-dot.porch { background: var(--forest); }
+
+  .final-cta {
+    background: var(--cream-light);
+    padding: 150px 48px;
+    text-align: center;
+    border-top: 0.5px solid var(--line);
+    position: relative;
+  }
+  .final-cta h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(40px, 5.2vw, 68px);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    font-weight: 400;
+    max-width: 15ch;
+    margin: 0 auto 32px;
+  }
+  .final-cta h2 em { font-style: italic; color: var(--brass-deep); }
+  .final-cta p {
+    font-size: 18px;
+    color: var(--forest-soft);
+    margin-bottom: 48px;
+    max-width: 54ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .waitlist-form {
+    display: flex; gap: 8px; max-width: 460px; margin: 0 auto;
+    background: white;
+    padding: 6px;
+    border-radius: 4px;
+    border: 0.5px solid var(--line);
+  }
+  .waitlist-form input {
+    flex: 1; border: none; outline: none;
+    padding: 14px 18px;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--forest);
+    background: transparent;
+  }
+  .waitlist-form input::placeholder { color: rgba(31, 58, 46, 0.4); }
+  .waitlist-form button {
+    background: var(--forest);
+    color: var(--cream);
+    border: none;
+    padding: 14px 24px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
+  }
+  .waitlist-form button:hover { background: var(--brass-deep); }
+
+  footer {
+    padding: 64px 48px 48px;
+    border-top: 0.5px solid var(--line);
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .footer-grid {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 24px;
+  }
+  .footer-brand { display: flex; align-items: center; gap: 12px; }
+  .footer-links { display: flex; gap: 32px; }
+  .footer-links a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--forest); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 18px 24px; }
+    .nav-links { gap: 20px; }
+    .nav-links a:not(.nav-cta) { display: none; }
+    .hero { padding: 140px 24px 80px; }
+    .hero-mark { display: none; }
+    section { padding: 90px 24px; }
+    .problem-section { margin: 0 -24px; padding: 110px 24px; }
+    .problem-grid { grid-template-columns: 1fr; gap: 48px; }
+    .how-step { grid-template-columns: 1fr; gap: 16px; padding: 48px 0; }
+    .how-step-num { font-size: 44px; }
+    .how-step-title { font-size: 26px; }
+    .waitlist-form { flex-direction: column; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .flow-section { margin: 0 -24px; padding: 90px 24px; }
+    .flow-diagram { grid-template-columns: 1fr 1fr; }
+    .flow-arrow { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#" class="brand">
+    <svg class="brand-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 14 L16 4 L29 14" stroke-width="2.2"/>
+      <path d="M6 14 L6 27"/>
+      <path d="M26 14 L26 27"/>
+      <path d="M3 27 L29 27" stroke-width="2.2"/>
+      <rect x="13" y="18" width="6" height="9" fill="currentColor" stroke="none"/>
+      <circle cx="16" cy="11" r="1.2" fill="var(--brass)" stroke="none"/>
+    </svg>
+    Porch
+  </a>
+  <div class="nav-links">
+    <a href="product.html">Product</a>
+    <a href="#how">How it works</a>
+    <a href="#why">Why Porch</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#waitlist" class="nav-cta">Join waitlist</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-mark">
+    <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 42 L50 20 L90 42" stroke-width="1"/>
+      <path d="M18 42 L18 82"/>
+      <path d="M82 42 L82 82"/>
+      <path d="M10 82 L90 82" stroke-width="1"/>
+      <rect x="40" y="58" width="20" height="24" fill="currentColor" stroke="none"/>
+      <circle cx="50" cy="30" r="2" fill="currentColor" stroke="none"/>
+      <line x1="22" y1="52" x2="36" y2="52" opacity="0.7"/>
+      <line x1="22" y1="58" x2="36" y2="58" opacity="0.7"/>
+      <line x1="22" y1="64" x2="36" y2="64" opacity="0.7"/>
+      <line x1="22" y1="70" x2="36" y2="70" opacity="0.7"/>
+      <line x1="64" y1="52" x2="78" y2="52" opacity="0.7"/>
+      <line x1="64" y1="58" x2="78" y2="58" opacity="0.7"/>
+      <line x1="64" y1="64" x2="78" y2="64" opacity="0.7"/>
+      <line x1="64" y1="70" x2="78" y2="70" opacity="0.7"/>
+    </svg>
+  </div>
+  <div class="hero-eyebrow">For hosts who carry the risk</div>
+  <h1>Where every stay <em>begins.</em></h1>
+  <p class="lead">Porch is trust infrastructure for independent Airbnb hosts. Greet every guest with a signed agreement. Document what happens. Defend yourself when it matters.</p>
+  <div class="hero-ctas">
+    <a href="#waitlist" class="btn-primary">Join the waitlist →</a>
+    <a href="#how" class="btn-secondary">How it works</a>
+  </div>
+</section>
+
+<section id="how">
+  <div class="container">
+    <div class="section-eyebrow">How it works</div>
+    <h2 class="section-title">Three moments. <em>One porch.</em></h2>
+    <p class="section-lead">Every guest crosses the same threshold. Porch meets them there, records the agreement, watches the stay, and stands with you if something goes wrong.</p>
+
+    <div class="how-grid">
+      <div class="how-step">
+        <div class="how-step-num">01</div>
+        <div>
+          <div class="how-step-title">Greet every guest with a signed Welcome.</div>
+          <div class="how-step-tag">Before arrival</div>
+        </div>
+        <div class="how-step-desc">A ninety-second signed acknowledgment of your house rules, timestamped and stored. No smoking, no unregistered guests, no parties — on the record, in their own words. Refusal is itself a signal.</div>
+      </div>
+
+      <div class="how-step">
+        <div class="how-step-num">02</div>
+        <div>
+          <div class="how-step-title">Document the stay, quietly in the background.</div>
+          <div class="how-step-tag">During the stay</div>
+        </div>
+        <div class="how-step-desc">Neighbor complaints, noise events, camera pings, messages between you and the guest — compiled in real time, hashed for tamper-evidence, ready when you need them. You stay out of the way. Porch keeps watch.</div>
+      </div>
+
+      <div class="how-step">
+        <div class="how-step-num">03</div>
+        <div>
+          <div class="how-step-title">Defend yourself with evidence, not opinions.</div>
+          <div class="how-step-tag">After the stay</div>
+        </div>
+        <div class="how-step-desc">One-click dispute dossier formatted to Airbnb's retaliatory review policy. Pre-drafted letter, cited evidence, tamper-proof timeline. The review comes down. Your reputation stays intact.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="flow-section">
+  <div class="flow-container">
+    <div class="section-eyebrow">The guest experience</div>
+    <h2 class="section-title">From booking to <em>signed Welcome</em> in under two minutes.</h2>
+    <p class="section-lead">Porch works in the background. The guest experience stays simple: book, sign, stay.</p>
+
+    <div class="flow-diagram">
+      <div class="flow-step">
+        <div class="flow-step-num">01</div>
+        <svg class="flow-step-icon" viewBox="0 0 24 24"><path d="M4 8h16v11H4z"/><path d="M4 8l8 5 8-5"/></svg>
+        <div class="flow-step-title">Guest books</div>
+        <div class="flow-step-desc">Reservation confirmed on Airbnb as normal.</div>
+        <div class="flow-step-actor guest">Guest</div>
+        <div class="flow-arrow"><svg viewBox="0 0 20 12"><path d="M2 6h16m-4-4l4 4-4 4"/></svg></div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-step-num">02</div>
+        <svg class="flow-step-icon" viewBox="0 0 24 24"><path d="M3 6h18v12H3z"/><path d="M3 6l9 7 9-7"/><circle cx="19" cy="6" r="3" fill="currentColor" stroke="none"/></svg>
+        <div class="flow-step-title">Porch detects it</div>
+        <div class="flow-step-desc">Booking email auto-parsed. Host is notified.</div>
+        <div class="flow-step-actor porch">Porch</div>
+        <div class="flow-arrow"><svg viewBox="0 0 20 12"><path d="M2 6h16m-4-4l4 4-4 4"/></svg></div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-step-num">03</div>
+        <svg class="flow-step-icon" viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>
+        <div class="flow-step-title">Host sends link</div>
+        <div class="flow-step-desc">One-click copy into Airbnb message.</div>
+        <div class="flow-step-actor host">Host</div>
+        <div class="flow-arrow"><svg viewBox="0 0 20 12"><path d="M2 6h16m-4-4l4 4-4 4"/></svg></div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-step-num">04</div>
+        <svg class="flow-step-icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3"/><path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
+        <div class="flow-step-title">Guest reviews rules</div>
+        <div class="flow-step-desc">Walks through the house rules on their phone.</div>
+        <div class="flow-step-actor guest">Guest</div>
+        <div class="flow-arrow"><svg viewBox="0 0 20 12"><path d="M2 6h16m-4-4l4 4-4 4"/></svg></div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-step-num">05</div>
+        <svg class="flow-step-icon" viewBox="0 0 24 24"><path d="M4 17l4 4L20 9"/><path d="M4 12l4 4L16 8" opacity="0.4"/></svg>
+        <div class="flow-step-title">Signs the Welcome</div>
+        <div class="flow-step-desc">Typed signature. Timestamp and device logged.</div>
+        <div class="flow-step-actor guest">Guest</div>
+        <div class="flow-arrow"><svg viewBox="0 0 20 12"><path d="M2 6h16m-4-4l4 4-4 4"/></svg></div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-step-num">06</div>
+        <svg class="flow-step-icon" viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h12"/><circle cx="19" cy="18" r="3" fill="currentColor" stroke="none"/></svg>
+        <div class="flow-step-title">Record filed</div>
+        <div class="flow-step-desc">Host is notified. Evidence stored for the stay.</div>
+        <div class="flow-step-actor porch">Porch</div>
+      </div>
+    </div>
+
+    <div class="flow-legend">
+      <div class="legend-item"><span class="legend-dot guest"></span>Guest action</div>
+      <div class="legend-item"><span class="legend-dot host"></span>Host action</div>
+      <div class="legend-item"><span class="legend-dot porch"></span>Porch automation</div>
+    </div>
+  </div>
+</section>
+
+<section id="why" class="problem-section">
+  <div class="container">
+    <div class="section-eyebrow">Why Porch exists</div>
+    <h2 class="section-title">Airbnb's review system punishes the hosts <em>who enforce their own rules.</em></h2>
+    <p class="section-lead" style="color: rgba(245, 239, 226, 0.72); max-width: 62ch;">Every host knows the calculation. Call out a rule-breaking guest and risk a retaliatory one-star review that tanks your rating for months. Stay quiet and eat the deep-clean bill. Porch breaks the trade.</p>
+
+    <div class="problem-grid">
+      <div class="problem-col before">
+        <div class="divider-small"></div>
+        <h3>Without Porch</h3>
+        <p>You catch a guest smoking. You know mentioning it means a retaliatory review — the kind that drops your rating from 4.98 to 4.79 overnight and takes six months to recover.</p>
+        <p>You stay quiet. You absorb the deep-clean cost. The next host deals with the same guest.</p>
+        <p>Airbnb's dispute system asks for evidence of retaliation. You have a gut feeling. They deny the removal.</p>
+      </div>
+      <div class="problem-col after">
+        <div class="divider-small"></div>
+        <h3>With Porch</h3>
+        <p>Before check-in, the guest signed a Welcome — no smoking, $500 deep-clean fee, agreed in writing.</p>
+        <p>During the stay, the neighbor complaint was forwarded. Your camera logged entry timestamps. Porch recorded it all.</p>
+        <p>When the retaliatory review arrives, the dispute writes itself. Evidence, policy, timeline. The review comes down. Your rating stays.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="quote-section">
+  <div class="quote-block">
+    <div class="quote-mark">"</div>
+    <div class="quote-text">I hosted for six years before I lost Guest Favorite over <em>one retaliatory review from a guest who broke three house rules.</em> I'd have paid ten times what this costs to have had evidence on file.</div>
+    <div class="quote-attr"><strong>Superhost, East Coast</strong> &nbsp;·&nbsp; Two listings, five years on Airbnb</div>
+  </div>
+</section>
+
+<section id="pricing" class="pricing-section">
+  <div class="pricing-block">
+    <div class="section-eyebrow" style="text-align: center;">Pricing</div>
+    <h2 class="pricing-title">Less than <em>one bad review</em> costs you.</h2>
+    <p class="pricing-sub">Start simple with the Welcome. Upgrade when you want the full protection of the Record.</p>
+
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="tier-name">Welcome</div>
+        <div class="tier-sub">Signed guest acknowledgment for every stay.</div>
+        <div class="tier-price">
+          <span class="dollar">$</span>
+          <span class="num">9</span>
+          <span class="per">/month per listing</span>
+        </div>
+        <ul class="tier-features">
+          <li>Automatic booking detection via email</li>
+          <li>Branded guest Welcome flow</li>
+          <li>Timestamped signed acknowledgment</li>
+          <li>Receipt PDF for every stay</li>
+          <li>Completion status dashboard</li>
+        </ul>
+        <a href="#waitlist" class="tier-cta outline">Join waitlist →</a>
+      </div>
+
+      <div class="pricing-card featured">
+        <div class="featured-badge">Most chosen</div>
+        <div class="tier-name">Welcome + Record</div>
+        <div class="tier-sub">Acknowledgment plus full defense and evidence.</div>
+        <div class="tier-price">
+          <span class="dollar">$</span>
+          <span class="num">15</span>
+          <span class="per">/month per listing</span>
+        </div>
+        <ul class="tier-features">
+          <li>Everything in Welcome</li>
+          <li>Automatic violation documentation</li>
+          <li>Neighbor complaint + camera event capture</li>
+          <li>One-click dispute dossier generation</li>
+          <li>Pre-drafted Airbnb policy letter</li>
+          <li>Priority support when disputes arise</li>
+        </ul>
+        <a href="#waitlist" class="tier-cta solid">Join waitlist →</a>
+      </div>
+    </div>
+
+    <p class="pricing-caveat">Founding hosts get the first three months free and founder pricing locked for life.</p>
+  </div>
+</section>
+
+<section id="waitlist" class="final-cta">
+  <h2>Every stay begins <em>on the porch.</em></h2>
+  <p>Join the waitlist. No spam, no sales calls. We'll email you when your spot opens.</p>
+  <form class="waitlist-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='You\u2019re in ✓'; this.querySelector('button').disabled=true;">
+    <input type="email" placeholder="you@hosting.com" required>
+    <button type="submit">Join waitlist</button>
+  </form>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:22px; height:22px; opacity: 0.7;">
+        <path d="M3 14 L16 4 L29 14" stroke-width="2.2"/>
+        <path d="M6 14 L6 27"/>
+        <path d="M26 14 L26 27"/>
+        <path d="M3 27 L29 27" stroke-width="2.2"/>
+        <rect x="13" y="18" width="6" height="9" fill="currentColor" stroke="none"/>
+      </svg>
+      <span>Porch · Built by hosts, for hosts.</span>
+    </div>
+    <div class="footer-links">
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 20) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  });
+</script>
+
+</body>
+</html>
